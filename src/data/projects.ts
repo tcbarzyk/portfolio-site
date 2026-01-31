@@ -14,8 +14,8 @@ export const projects: Project[] = [
   {
     title: "PORCH",
     description: [
-        "As a developer for <a href=\"https://appteamcarolina.com/\" target=\"_blank\" rel=\"noopener noreferrer\">App Team Carolina</a>, I'm working on an app for PORCH, a nonprofit providing food donation and delivery services in the Chapel Hill-Carrboro community.",
-        "PORCH is currently facilitating over 10,000lb of food donations monthly. The app is built with <strong>SwiftUI</strong> and <strong>Firebase</strong>, and we are currently utilizing <strong>TestFlight</strong> for user testing in preperation for deployment.",
+        "As a developer for <a href=\"https://appteamcarolina.com/\" target=\"_blank\" rel=\"noopener noreferrer\">App Team Carolina</a>, I'm working on an app for <a href=\"https://chapelhill.porchcommunities.org/\" target=\"_blank\" rel=\"noopener noreferrer\">PORCH</a>, a nonprofit providing food donation and delivery services in the Chapel Hill–Carrboro community.",
+        "PORCH is currently facilitating over 10,000 lb of food donations monthly. The app is built with <strong>SwiftUI</strong> and <strong>Firebase</strong>, and we are currently utilizing <strong>TestFlight</strong> for user testing in preparation for deployment.",
         "Personally, I have worked on designing SwiftUI components, fixing bugs, integrating frontend with backend, and conducting user testing and research."
     ],
     image: "/projects/porch.jpeg",
@@ -24,7 +24,7 @@ export const projects: Project[] = [
   {
     title: "CancerLINC",
     description: [
-      "As a developer for <a href=\"https://www.cssgunc.org/\" target=\"_blank\" rel=\"noopener noreferrer\">Computer Science + Social Good at UNC</a>, I'm working on an app for CancerLINC, a nonprofit providing legal and financial support to cancer patients in Central Virginia.",
+      "As a developer for <a href=\"https://www.cssgunc.org/\" target=\"_blank\" rel=\"noopener noreferrer\">Computer Science + Social Good at UNC</a>, I'm working on an app for <a href=\"https://cancerlinc.org/\" target=\"_blank\" rel=\"noopener noreferrer\">CancerLINC</a>, a nonprofit providing legal and financial support to cancer patients in Central Virginia.",
       "CancerLINC is currently serving over 700 patients, 180 volunteers, and managing ~$1M in donations yearly. The app is built with a <strong>Flutter</strong> frontend, <strong>Firebase</strong> backend, and will include an admin/data dashboard built with <strong>React</strong>. The app is still currently in development.",
       "Personally, I have worked on developing Flutter components, designing database schemas, and helping with sprint planning."
     ],
