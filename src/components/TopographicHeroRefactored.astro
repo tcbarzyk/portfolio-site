@@ -1,0 +1,172 @@
+---
+// Topographic Hero - Flowing Wave Background
+import { content } from '../data/content';
+import { noise } from '../utils/perlinNoise';
+---
+
+<div class="hero-container">
+  <canvas id="topoCanvas"></canvas>
+  <div class="hero-content" id="heroContent">
+    <h1 class="name">TEDDY BARZYK</h1>
+    <p class="title">Full-Stack Engineer</p>
+    <div class="button-group">
+      <button class="nav-button" data-section="about">About Me</button>
+      <button class="nav-button" data-section="resume">Resume</button>
+      <button class="nav-button" data-section="projects">Projects</button>
+      <button class="nav-button" data-section="contact">Contact</button>
+    </div>
+  </div>
+  <div class="content-panel" id="contentPanel">
+    <button class="close-button" id="closeButton">×</button>
+    <div class="panel-content" id="panelContent">
+      <!-- Content will be dynamically inserted -->
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  @import '../styles/hero.css';
+</style>
+
+<script>
+  import { noise } from '../utils/perlinNoise';
+  import { content } from '../data/content';
+
+  const canvas = document.getElementById('topoCanvas') as HTMLCanvasElement;
+  const ctx = canvas.getContext('2d')!;
+  const heroContent = document.getElementById('heroContent')!;
+  const contentPanel = document.getElementById('contentPanel')!;
+  const panelContent = document.getElementById('panelContent')!;
+  const navButtons = document.querySelectorAll('.nav-button');
+  const closeButton = document.getElementById('closeButton')!;
+  
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  let time = 0;
+  let lineEffect = 'wave'; // 'wave', 'straight', 'split', 'twist', 'converge'
+  let targetEffect = 'wave';
+  let effectProgress = 0;
+  let isPanelOpen = false;
+
+  function resizeCanvas() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  
+  resizeCanvas();
+
+  function applyEffect(baseY: number, waveOffset: number, lineIndex: number, numLines: number): number {
+    // Smooth transition between effects
+    effectProgress += (targetEffect === lineEffect ? 0 : 0.03);
+    if (effectProgress >= 1) {
+      lineEffect = targetEffect;
+      effectProgress = 0;
+    }
+
+    const t = Math.min(effectProgress, 1);
+    let effectY = baseY + waveOffset;
+
+    if (targetEffect === 'straight') {
+      // Straighten: remove wave
+      effectY = baseY + waveOffset * (1 - t);
+    } else if (targetEffect === 'split') {
+      // Split: push lines apart at center
+      const centerDist = lineIndex - numLines / 2;
+      const splitOffset = Math.sign(centerDist) * Math.abs(centerDist) * 8 * t;
+      effectY = baseY + waveOffset * (1 - t * 0.7) + splitOffset;
+    } else if (targetEffect === 'twist') {
+      // Twist: diagonal wave pattern
+      const twistOffset = Math.sin((lineIndex / numLines) * Math.PI * 2 + time * 0.5) * 50 * t;
+      effectY = baseY + waveOffset * (1 - t * 0.5) + twistOffset;
+    } else if (targetEffect === 'converge') {
+      // Converge: pull lines toward center
+      const centerDist = (lineIndex - numLines / 2) / (numLines / 2);
+      const convergeOffset = -centerDist * 30 * t;
+      effectY = baseY + waveOffset * (1 - t * 0.6) + convergeOffset;
+    }
+
+    return effectY;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+    
+    const numLines = 40;
+    const spacing = 15;
+    
+    for (let i = 0; i < numLines; i++) {
+      ctx.beginPath();
+      
+      const baseY = i * spacing - (numLines * spacing) / 2 + height / 2;
+      const centerDist = Math.abs(i - numLines / 2) / (numLines / 2);
+      const alpha = 0.3 * (1 - centerDist * 0.6);
+      
+      ctx.strokeStyle = `rgba(0, 0, 0, ${alpha})`;
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      
+      let firstPoint = true;
+      
+      for (let x = 0; x <= width; x += 3) {
+        const waveOffset = noise(x, baseY, time, i);
+        const y = applyEffect(baseY, waveOffset, i, numLines);
+        
+        if (firstPoint) {
+          ctx.moveTo(x, y);
+          firstPoint = false;
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
+      
+      ctx.stroke();
+    }
+    
+    if (lineEffect === 'wave' || effectProgress > 0) {
+      time += 0.01;
+    }
+    
+    requestAnimationFrame(draw);
+  }
+
+  // Button interactions
+  navButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      const section = (e.target as HTMLElement).dataset.section!;
+      const sectionContent = content[section as keyof typeof content];
+      
+      if (!isPanelOpen) {
+        isPanelOpen = true;
+        
+        // Set line effect based on section
+        if (section === 'about') targetEffect = 'straight';
+        else if (section === 'resume') targetEffect = 'split';
+        else if (section === 'projects') targetEffect = 'twist';
+        else if (section === 'contact') targetEffect = 'converge';
+        
+        heroContent.classList.add('hidden');
+        panelContent.innerHTML = `<h2>${sectionContent.title}</h2>${sectionContent.html}`;
+        setTimeout(() => {
+          contentPanel.classList.add('visible');
+        }, 300);
+      }
+    });
+  });
+
+  closeButton.addEventListener('click', () => {
+    if (isPanelOpen) {
+      isPanelOpen = false;
+      targetEffect = 'wave';
+      contentPanel.classList.remove('visible');
+      setTimeout(() => {
+        heroContent.classList.remove('hidden');
+      }, 300);
+    }
+  });
+
+  window.addEventListener('resize', resizeCanvas);
+  draw();
+</script>
