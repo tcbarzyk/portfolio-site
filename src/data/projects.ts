@@ -1,7 +1,8 @@
 export interface Project {
   title: string;
   description: string[];
-  image: string;
+  image?: string;
+  imageAlignment?: 'left' | 'right';
   githubUrl?: string;
   aspectRatio?: string;
   imageWidth?: string;
@@ -12,6 +13,26 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Easy Chat",
+    description: [
+      "A concurrent <strong>TCP</strong> chat server written in <strong>Go</strong>, built to explore Go's concurrency model.",
+      "Uses a single hub goroutine to manage all shared state via <strong>channels</strong>, avoiding <strong>mutexes</strong> entirely. Each client gets a dedicated write goroutine so a slow connection never blocks other clients. Request/response operations use reply channels embedded in request structs for clean synchronization semantics.",
+      "Supports live commands including <strong>/users</strong>, <strong>/stats</strong>, <strong>/help</strong>, and <strong>/quit</strong>. Connect via <strong>telnet</strong> or <strong>netcat</strong> on port <strong>9000</strong>.",
+      "I built this to learn <strong>Go</strong>, and I've really been enjoying the language so far. I'll continue developing this project and adding more advanced features, such as chat rooms, chat history, and admin commands."
+    ],
+    githubUrl: "https://github.com/tcbarzyk/easy-chat"
+  },
+  {
+    title: "Distributed Inference Platform",
+    description: [
+      "A scalable <strong>distributed video inference</strong> system built to process live frames across decoupled producer, worker, and API services.",
+      "The producer ingests frames from video sources and pushes jobs to a <strong>Redis</strong> queue. Workers consume jobs, run <strong>YOLOv8</strong> object detection, and persist results to <strong>PostgreSQL</strong>. The API serves live frames via Redis-first lookup with DB fallback, and streams continuous video via <strong>MJPEG</strong> over Redis <strong>Pub/Sub</strong>.",
+      "Key design decisions included a single shared schema contract library across services, <strong>keyset pagination</strong> for stable reads under write load, and a layered live video transport strategy. Orchestrated with <strong>Docker Compose</strong> with <strong>Alembic</strong> managing migrations.",
+      "I built this project to get a grasp on <strong>distributed systems design</strong>. It was a great learning experience, but I still have a long way to go. Next steps include implementing authentication, designing a frontend interface, optimizing performance and reliability, and deploying to the cloud."
+    ],
+    githubUrl: "https://github.com/tcbarzyk/distributed-inference-platform"
+  },
+  {
     title: "PORCH",
     description: [
         "As a developer for <a href=\"https://appteamcarolina.com/\" target=\"_blank\" rel=\"noopener noreferrer\">App Team Carolina</a>, I'm working on an app for <a href=\"https://chapelhill.porchcommunities.org/\" target=\"_blank\" rel=\"noopener noreferrer\">PORCH</a>, a nonprofit providing food donation and delivery services in the Chapel Hill–Carrboro community.",
@@ -19,6 +40,7 @@ export const projects: Project[] = [
         "Personally, I have worked on designing SwiftUI components, fixing bugs, integrating frontend with backend, and conducting user testing and research."
     ],
     image: "/projects/porch.jpeg",
+    imageAlignment: "left",
     githubUrl: ""
   },
   {
@@ -29,6 +51,7 @@ export const projects: Project[] = [
       "Personally, I have worked on developing Flutter components, designing database schemas, and helping with sprint planning."
     ],
     image: "/projects/cancerlinc.jpeg",
+    imageAlignment: "right",
     githubUrl: ""
   },
   {
@@ -40,6 +63,7 @@ export const projects: Project[] = [
       "Try it out at <a href=\"https://bandmanager.tcbarzyk.dev/\" target=\"_blank\" rel=\"noopener noreferrer\">bandmanager.tcbarzyk.dev</a>. Note: certain features might not work whenever my Supabase project is paused."
     ],
     image: "/projects/bandmanager.png",
+    imageAlignment: "left",
     githubUrl: "https://github.com/tcbarzyk/band-manager",
     aspectRatio: "3 / 2",
     imageWidth: "30%",
@@ -54,6 +78,7 @@ export const projects: Project[] = [
       "TapIn was built for HackNC 2025 using <strong>SwiftUI</strong> and <strong>Firebase</strong>. I led a hackathon team of 4 people to create this app in 24 hours."
     ],
     image: "/projects/tapin.jpeg",
+    imageAlignment: "right",
     githubUrl: "https://github.com/tcbarzyk/HackNC-2025"
   },
   {
@@ -64,6 +89,7 @@ export const projects: Project[] = [
       "I made this app for the App Team Carolina iOS development bootcamp, where I learned the basics of SwiftUI."
     ],
     image: "/projects/readinglist.jpeg",
+    imageAlignment: "left",
     githubUrl: "https://github.com/tcbarzyk/reading-list-app"
   },
   {
@@ -74,6 +100,7 @@ export const projects: Project[] = [
       "<a href=\"https://cohloy.itch.io/princess-plunge\" target=\"_blank\" rel=\"noopener noreferrer\">Try it out</a> on itch.io!"
     ],
     image: "/projects/princessplunge.png",
+    imageAlignment: "right",
     githubUrl: "https://github.com/tcbarzyk/falling-for-it",
     aspectRatio: "1 / 1",
     imageScale: 1

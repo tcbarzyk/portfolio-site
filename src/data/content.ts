@@ -31,10 +31,11 @@ export const content = {
     html: `
       <div class="projects-grid">
         ${projects.map(project => `
-        <div class="project-card ${project.splitDescription ? 'project-card--split' : ''}">
+        <div class="project-card ${project.splitDescription && project.image ? 'project-card--split' : ''} ${project.imageAlignment === 'right' ? 'project-card--image-right' : ''}">
+          ${project.image ? `
           <div class="project-image" style="aspect-ratio: ${project.aspectRatio ?? '2 / 3'}; flex-basis: ${project.imageWidth ?? '30%'}; max-width: ${project.imageMaxWidth ?? '280px'};">
             <img src="${project.image}" alt="${project.title}" onerror="this.parentElement.innerHTML='Image placeholder'" style="transform: scale(${project.imageScale ?? 1});">
-          </div>
+          </div>` : ''}
           <div class="project-info">
             <div class="project-header">
               <h3 class="project-title">${project.title}</h3>

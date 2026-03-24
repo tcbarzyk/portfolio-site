@@ -178,7 +178,7 @@
   margin-top: 0.75rem;
 }
 
-.project-card:nth-child(even) {
+.project-card--image-right {
   flex-direction: row-reverse;
 }
 
